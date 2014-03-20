@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            TAMZ 1 Form save demo
+        </title>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="themes/vsb-1.4.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.0.min.css" />
+        
+        <!-- Date picker -->
+        <script src="datepicker/jquery.ui.datepicker.min.js"></script>
+        <script src="datepicker/jquery.mobile.datepicker.js"></script>        
+        <link rel="stylesheet" href="datepicker/jquery.mobile.datepicker.css" />
+    </head>
+   <body>
+    
+        <div data-role="page" data-theme="c" id="page2">
+            <div data-role="header">
+                <h1>Collapsible demo</h1>
+            </div>
+            <div class="ui-content" role="main">
+                <div data-role="collapsible-set" data-content-theme="d" id="set">
+            </div>
+            <div data-role="footer">
+            </div>
+            <script>
+            $(document).on("pagebeforecreate",function(){
+                var nextId = 1;
+                var storedNames = JSON.parse(localStorage["names"]);
+                var content = "<div data-role='collapsible' id='set" + nextId + "'><h3>" + storedNames[0] + "</h3><p> Name:" + storedNames[0] + "</p><p> Surname:" + storedNames[1] + "</p><p> Age:" + storedNames[2] + "</p></div>";
+                $("#set").append( content );
+                nextId++;
+            });
+            </script>
+        </div>
+    </body>
+</html>

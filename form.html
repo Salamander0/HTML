@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            TAMZ 1 Form save demo
+        </title>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="themes/vsb-1.4.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.0.min.css" />
+        
+        <!-- Date picker -->
+        <script src="datepicker/jquery.ui.datepicker.min.js"></script>
+        <script src="datepicker/jquery.mobile.datepicker.js"></script>        
+        <link rel="stylesheet" href="datepicker/jquery.mobile.datepicker.css" />
+    </head>
+   <body>
+    
+        <div data-role="page" data-theme="c" id="page1">
+            <div data-role="header">
+                <h1>Form saving demo</h1>
+            </div>
+            <div class="ui-content" role="main">
+                <form name="test form">
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="firstname">Jméno</label><input type="text" id="firstname" data-mini="true" class="stored" value="">
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="surname">Příjmení</label><input type="text" id="surname" data-mini="true" class="stored" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="vek">Věk:</label> <input id="vek" name="vek" type="range" min="1" max="110" value="50"/>
+                    </div>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <fieldset data-role="controlgroup">
+                                <legend>Pohlaví</legend>
+                                <input type="radio" id="radio1" name="radio1" checked="checked"><label for="radio1">Muž</label>
+                                <input type="radio" id="radio2" name="radio1"><label for="radio2">Žena</label>
+                                <input type="radio" id="radio3" name="radio1"><label for="radio3">Jiné</label>
+                            </fieldset>
+                        </div>
+                        <div class="ui-block-b">
+                            <fieldset data-role="controlgroup">
+                                <legend>Národnost</legend>
+                                <input type="checkbox" name="CZ" id="CZ"><label for="CZ">Česká</label>
+                                <input type="checkbox" name="SK" id="SK"><label for="SK">Slovenská</label>
+                                <input type="checkbox" name="BLABLA" id="BLABLA"><label for="BLABLA">Jiná</label>
+                            </fieldset>
+                        </div>
+                    </div>
+                <div data-role="controlgroup" data-type="horizontal" align="center">                    
+                    <a data-role="button" data-icon="arrow-d" data-iconpos="left" id="save" data-rel="dialog" onclick="save()">Uložit</a>                 
+                    <a data-role="button" data-icon="arrow-u" data-iconpos="left" id="load" data-rel="dialog" onclick="load()">Načist</a>                    
+                    <a data-role="button" data-icon="check" data-iconpos="left" id="send" data-rel="dialog" onclick="send()" href="form2.html" data-transition="slide">Odeslat</a>
+                </div>
+                 </form>
+                <script>
+                function save(){
+                    if(typeof(Storage)=="undefined"){alert('local storage is not available');}                    
+
+                    localStorage.setItem("firstname", $("#firstname").val());
+                    localStorage.setItem("surname", $("#surname").val());
+                    localStorage.setItem("age", $("#vek").val());
+                    
+                    if($('#CZ').is(':checked'))localStorage.setItem("checkbox1", "true"); 
+                    else localStorage.setItem("checkbox1", "false");
+                    if($('#BLABLA').is(':checked'))localStorage.setItem("checkbox2", "true"); 
+                    else localStorage.setItem("checkbox2", "false");
+                    if($('#SK').is(':checked'))localStorage.setItem("checkbox3", "true"); 
+                    else localStorage.setItem("checkbox3", "false");
+                    
+                    var radio;
+                    if($('#radio1').is(':checked')){radio=1;}
+                    else if($('#radio2').is(':checked')){radio=2;}
+                    else radio=3;
+                    localStorage.setItem("radio", radio);               
+                }
+                function load(){
+                    $("#firstname").prop('value', localStorage.getItem("firstname"));
+                    $("#surname").prop('value', localStorage.getItem("surname"));
+                    $("#vek").prop('value',localStorage.getItem("age")).slider('refresh');
+                                        
+                    if(localStorage.getItem("checkbox1") == "true"){ 
+                        $("#CZ").prop('checked', true).checkboxradio('refresh');
+                        }
+                    if(localStorage.getItem("checkbox2") == "true"){                     
+                        $("#BLABLA").prop('checked', true).checkboxradio('refresh');
+                        }
+                    if(localStorage.getItem("checkbox3") == "true"){ 
+                        $("#SK").prop('checked', true).checkboxradio('refresh');
+                        }
+                        
+                    if(localStorage.getItem("radio") == 1){
+                        $("#radio3").prop('checked', false).checkboxradio('refresh');
+                        $("#radio2").prop('checked', false).checkboxradio('refresh');
+                        $("#radio1").prop('checked', true).checkboxradio('refresh');
+                     }
+                    if(localStorage.getItem("radio") == 2){
+                         $("#radio3").prop('checked', false).checkboxradio('refresh');
+                         $("#radio1").prop('checked', false).checkboxradio('refresh');
+                         $("#radio2").prop('checked', true).checkboxradio('refresh');
+                     }
+                    if(localStorage.getItem("radio") == 3){
+                        $("#radio1").prop('checked', false).checkboxradio('refresh');
+                        $("#radio2").prop('checked', false).checkboxradio('refresh');
+                        $("#radio3").prop('checked', true).checkboxradio('refresh');
+                     }
+              }
+                function send(){
+                    var names = [];
+                    names[0] = $("#firstname").val();
+                    names[1] = $("#surname").val();
+                    names[2] = $("#vek").val();
+                    
+                    localStorage["names"] = JSON.stringify(names);
+                }
+                </script>
+            </div>
+            <div data-role="footer">
+            </div>
+        </div>
+    </body>
+</html>
