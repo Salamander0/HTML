@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Salamander's TAMZ testing site
+        </title>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+<!--        <script src="js/my_code.js"></script>-->
+        <link rel="stylesheet" href="themes/vsb-1.4.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile.structure-1.4.2.min.css" />
+        <!--<link rel="stylesheet" href="themes/my_theme.css" />-->
+    </head>
+    <body>
+      <div data-role="page" data-theme="c" id="page1">
+        <div data-role="header">
+            <h1>Salamander's TAMZ testing site</h1> 
+        </div><!--header-->
+        <div class="ui-content" role="main">
+            <div data-role="controlgroup" data-type="vertical">
+                <a onclick="location.href='tamz6.html';" data-transition="flow" data-inline="true" class="ui-btn">Currency converter</a>
+                <a onclick="location.href='clock.html';" data-transition="flow" data-inline="true" class="ui-btn">Polar clock</a>
+                 <a onclick="location.href='robot.html';" data-transition="flow" data-inline="true" class="ui-btn">Game alpha</a>
+            </div>
+        </div><!--content-->
+        <div data-role="footer">
+            <div>Posledni navsteva: <span id="last">nikdy</span></div>
+             <script>
+                if(typeof(Storage)=== "undefined" || localStorage == null){
+                    alert("Sorry, neukladam.");
+                }
+                if(localStorage.getItem('lastvisit.visited')){
+                    $("#last").text(new Date(JSON.parse((localStorage.getItem('lastvisit.visited')))).toLocaleString());
+                }
+                localStorage.setItem('lastvisit.visited', JSON.stringify(new Date()));
+            </script>
+        </div><!--footer-->
+      </div><!--page-->   
+    </body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Polar clock
+        </title>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+<!--        <script src="js/my_code.js"></script>-->
+        <link rel="stylesheet" href="themes/vsb-1.4.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile.structure-1.4.2.min.css" />
+        <!--<link rel="stylesheet" href="themes/my_theme.css" />-->
+    </head>
+    <body>
+      <div data-role="page" data-theme="c" id="page1">
+        <div class="ui-content" role="main" style="padding: 0">
+            <canvas id="myCanvas" style="border-bottom: 1px solid orange">
+                
+            </canvas>
+
+        </div><!--content-->
+        <div data-role="footer">
+        </div><!--footer-->
+        <script>
+            var usr_color = 160; //Change value to change color scheme
+            var arcs = [];
+            
+            var $cnv = $('#myCanvas');
+            window.requestAnimFrame = ( function(){ return  window.requestAnimationFrame;})();
+
+            var ctx = $cnv.get(0).getContext('2d');
+            $cnv.attr('width', $(window).innerWidth());
+            $cnv.attr('height', $(window).innerHeight()*0.99); 
+
+            function init(){
+                console.log("init called");
+                reset();
+                arcs = [];
+                
+                var w = $(window).innerWidth();
+                var h = $(window).innerHeight()*0.99;
+                var x = Math.min(w,h);
+                
+                var h = new arc();
+                h.class = "hours";
+                h.r = x/4+30;
+                arcs.push(h);
+  
+                var m = new arc();
+                m.class = "mins";
+                m.r = x/4;
+                arcs.push(m);
+  
+                var s = new arc();
+                s.class = "secs";
+                s.r = x/4-30;
+                arcs.push(s);
+            }
+
+            function arc(){
+                this.class = "hours";
+                this.r = 100;
+                this.rot = 1;
+  
+                this.draw = function(){
+                    ctx.lineWidth = 0.5;
+                    var w = $(window).innerWidth();
+                    var h = $(window).innerHeight()*0.99;
+                    var x = Math.min(w,h);
+                    var d = new Date();
+                    var hour = d.getHours();
+                    var min = d.getMinutes();
+                    var sec = d.getSeconds();   
+                    
+                    ctx.save();
+                        ctx.fillStyle = "white";
+                        ctx.font = '15px sans-serif';
+                        ctx.textBaseLine = 'middle';
+                        ctx.fillText("*Press any key - change color scheme",20,20);
+                    ctx.restore();        
+                    
+                    ctx.save();
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = "hsla("+(180/Math.PI+usr_color)+", 60%,50%,1)";
+                    if(x>640) ctx.font="50px Arial Rounded MT Bold";
+                    else if(x>450)ctx.font="30px Arial Rounded MT Bold";
+                    else ctx.font="15px Arial Rounded MT Bold";
+                        ctx.textBaseLine = 'middle';
+                        ctx.textAlign = 'center';
+                        ctx.strokeText(hour +":"+ padZ(min) +":"+ padZ(sec), w/2, h/2);
+                    ctx.restore();
+                    
+                    ctx.beginPath();
+                    ctx.arc(w/2,h/2,this.r,(Math.PI/(2/3)),this.rot,false);
+                    ctx.lineWidth = 25;
+                    ctx.strokeStyle = "hsla("+(this.rot*(180/Math.PI)+usr_color)+",60%,50%,1)";
+                    ctx.stroke();
+    
+                    ctx.save();
+                    ctx.translate(w/2, h/2);
+                    ctx.rotate(this.rot);
+                    ctx.font="14px Arial Rounded MT Bold";
+                    if(this.class == "secs"){
+                        ctx.fillText(padZ(sec), x/4-38, -5);
+                    }else if(this.class == "mins"){
+                        ctx.fillText(padZ(min), x/4-8, -5);
+                    }else if(this.class == "hours"){
+                        ctx.fillText(hour, x/4+22, -5);
+                    }
+                    ctx.restore();
+                }
+            }
+            
+            function padZ(num, n) {
+                n = n || 1; // Default assume 10^1
+                return num < Math.pow(10, n) ? "0" + num : num;
+            }
+            
+            function reset(){
+                $cnv.attr('width', $(window).innerWidth());
+                $cnv.attr('height', $(window).innerHeight()*0.99);
+                var w = $(window).innerWidth();
+                var h = $(window).innerHeight()*0.99;           
+                ctx.fillStyle = "#333";
+                ctx.fillRect(0,0,w,h);
+            }  
+
+            function draw(){
+                reset();  
+                for(var i=0;i<arcs.length;i++){
+                    var a = arcs[i];
+                    var d = new Date();
+                    if(a.class == "hours"){
+                        var n = d.getHours();
+                        var m = d.getMinutes();
+                        a.rot = ((n/12)*(Math.PI*2) - (Math.PI/2)) + ((m/3600)*(Math.PI*2));
+                    }else if(a.class == "mins"){
+                        var n = d.getMinutes();
+                        var s = d.getSeconds();
+                        a.rot = ((n/60)*(Math.PI*2) - (Math.PI/2)) + ((s/3600)*(Math.PI*2));
+                    }else if(a.class == "secs"){
+                        var n = d.getSeconds();
+                        var m = d.getMilliseconds();
+                        a.rot = ((n/60)*(Math.PI*2) - (Math.PI/2)) + ((m/60000)*(Math.PI*2));
+                    }
+                    a.draw();
+                }
+            }
+
+            function animloop() {
+                draw();
+                requestAnimFrame(animloop); 
+            }
+
+            init();
+            animloop();
+            
+            window.addEventListener('resize', init, false);
+            $(document).on("keypress", function(e){
+                usr_color = (usr_color+20) % 360;
+                reset();
+            });
+        </script>
+      </div><!--page-->   
+    </body>
+</html>

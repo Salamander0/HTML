@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            TAMZ 1 Template with local files
+        </title>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+<!--        <script src="js/my_code.js"></script>-->
+        <link rel="stylesheet" href="themes/vsb-1.4.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile.structure-1.4.2.min.css" />
+        <!--<link rel="stylesheet" href="themes/my_theme.css" />-->
+    </head>
+    <body>
+      <div data-role="page" id="page1">
+        <div class="ui-content" role="main" id="main" style="padding: 0">
+            <canvas id="myCanvas" style="border-bottom: 1px solid orange">
+                
+            </canvas>
+        </div><!--content-->
+        <script>
+            var $cnv = $('#myCanvas');
+            var cidx = 0;
+            var colors = ['red', 'green', 'blue', 'fuchsia', 'lime', 'yellow', 'black'];
+            
+            function resizeCanvas(){
+                $cnv.attr('width', $(window).innerWidth());
+                $cnv.attr('height', $(window).innerHeight()*0.99);
+                redraw();
+            }
+            function redraw(){
+                var ctx = $cnv.get(0).getContext('2d');
+                var w = ctx.canvas.width;
+                var h = ctx.canvas.height;
+                var r = Math.min(w,h)/2;
+                ctx.clearRect(0,0,w,h);
+                ctx.save();
+                    //ctx.strokeStyle = "red";
+                    ctx.lineWidth = 16;
+                    ctx.lineJoin = 'round';
+                   //ctx.setLineDash([16]);
+                    var g1 = ctx.createLinearGradient(w/4,3*h/4,3*w/4,h/2);
+                    g1.addColorStop(0, "lime");
+                    g1.addColorStop(1, "gold");
+                    ctx.strokeStyle = g1;
+                    ctx.strokeRect(w/4, h/4, w/2, h/2);
+                    
+                    ctx.beginPath();
+                    //ctx.fillStyle = "rgb(127,63,63)";
+                    var grad = ctx.createRadialGradient(w/2, h/2, r/4, w/2, h/2, 3/4*r);
+                    grad.addColorStop(0, "blue");
+                    grad.addColorStop(0.5, "white");
+                    grad.addColorStop(1, "red");
+                    ctx.fillStyle = grad;
+                    ctx.globalAlpha = 0.5;
+                    
+                    
+                    ctx.arc(w/2, h/2, r, 0, Math.PI, true);
+                    ctx.fill();
+                    ctx.restore();
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(w/4, h/4);
+                    ctx.lineTo(3*w/4, 3*h/4);
+                    ctx.stroke();
+                    ctx.save();
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = colors[cidx];
+                        ctx.font = '15mm fantasy, sans-serif';
+                        ctx.textBaseLine = 'middle';
+                        ctx.textAlign = 'center';
+                        ctx.strokeText('Hello Fucking World!', w/2, h/2);
+                ctx.restore();
+            }   
+            
+            resizeCanvas();
+            redraw();
+            $(window).on("resize", resizeCanvas);
+            $(document).on("keypress", function(e){
+                cidx = ++cidx % colors.length;
+                redraw();
+            });
+        </script>
+      </div><!--page-->   
+    </body>
+</html>
