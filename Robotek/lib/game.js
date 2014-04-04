@@ -9,16 +9,8 @@ var Q = window.Q = Quintus({development: true})
 Q.input.keyboardControls();
 Q.gravityY = 0;
 Q.gravityX = 0;
-Q.input.touchControls({
-  controls:  [ ['left','<' ],
-               ['up','^'],
-               [],
-               ['down', 'v' ],
-               ['right','>' ]
-]
-});
 Q.input.joypadControls();
-Q.controls();
+//Q.controls();
 
 Q.scene('hud', function(stage) {
     var container = stage.insert(new Q.UI.Container({
@@ -58,51 +50,6 @@ Q.scene("level1", function(stage)
     st = stage;
 });
 
-
-Q.component("robotControl", {
-    defaults: {speed: 7, direction: 'up'},
-
-    added: function() {
-        var p = this.entity.p;
-
-        // add in our default properties
-        Q._defaults(p, this.defaults);
-
-        // every time our entity steps
-        // call our step method
-        this.entity.on("step", this, "step");
-        this.entity.on("hit", this, "hit");
-		this.entity.play("run");
-    },
-    step: function(dt) {
-        // grab the entity's properties
-        // for easy reference
-        var p = this.entity.p;
-
-        // rotate the player
-        if (Q.inputs['left'])
-        {
-            p.x = p.x - p.w/4;
-            p.angle = 30;
-        }
-        if (Q.inputs['right'])
-        {
-        	p.x = p.x + p.w/4;
-            p.angle = -30;
-        }
-        if (Q.inputs['up'])
-        {
-        	p.y = p.y - p.h/4;
-            p.angle = 0;
-        }
-        if (Q.inputs['down'])
-        {
-        	p.y = p.y + p.h/4;
-            p.angle = 0;
-        }
-    }
-});
-
 Q.Sprite.extend("Player", {
     init: function(p) {
         this._super(p,
@@ -112,7 +59,7 @@ Q.Sprite.extend("Player", {
                     sheet: "player",
                     score: 0
                 });
-        this.add('2d, animation, robotControl');
+        this.add('2d, animation');
         this.on("hit.sprite", this, "hit");
     },
     hit: function(collision) {
@@ -123,7 +70,35 @@ Q.Sprite.extend("Player", {
             //coinsLabel.p.label = 'Score : ' + this.p.score;
             //st.insert(new Q.Items({x: xNew, y: yNew, frame: frameNew}));
         }
-    }
+    },
+    step: function(dt) {
+        // grab the entity's properties
+        // for easy reference
+        var p = this.p;
+		
+		
+        // rotate the player
+        if (Q.inputs['left']){
+        	this.play("run");
+            p.x = p.x - p.w/4;
+            p.angle = 30;
+        }
+        if (Q.inputs['right']) {
+        	this.play("run");
+        	p.x = p.x + p.w/4;
+            p.angle = -30;
+        }
+        if (Q.inputs['up']){
+        	this.play("run");
+        	p.y = p.y - p.h/4;
+            p.angle = 0;
+        }
+        if (Q.inputs['down']){
+        	this.play("run");
+        	p.y = p.y + p.h/4;
+            p.angle = 0;
+        }
+    },
 });
 
 /*Q.Sprite.extend("Items", {
@@ -133,8 +108,7 @@ Q.Sprite.extend("Player", {
 });*/
 
 Q.animations('player', {
-    run: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], rate: 1 / 10},
-    stand: {frames: [7], rate: 1 / 2}
-
+    run: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], next:'stand', rate: 1 / 7},
+    stand: {frames: [7], rate: 1 / 2},
 });
 
