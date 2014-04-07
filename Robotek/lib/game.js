@@ -1,8 +1,8 @@
 var st;
 var Q = window.Q = Quintus({development: true})
         .include("Sprites, Scenes, Input, 2D, Anim, UI, Touch")
-        .setup({maximize: false, width: window.innerWidth, height: window.innerHeight});
-//        .setup({maximize: true});
+        //.setup({maximize: false, width: window.innerWidth, height: window.innerHeight});
+        .setup({maximize: true});
 
 //    Add in the default keyboard controls
 //    along with joypad controls for touch
@@ -10,7 +10,6 @@ Q.input.keyboardControls();
 Q.gravityY = 0;
 Q.gravityX = 0;
 Q.input.joypadControls();
-//Q.controls();
 
 Q.scene('hud', function(stage) {
     var container = stage.insert(new Q.UI.Container({
