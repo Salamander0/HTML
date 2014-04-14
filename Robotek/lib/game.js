@@ -10,10 +10,7 @@ Q.input.keyboardControls();
 Q.gravityY = 0;
 Q.gravityX = 0;
 Q.input.joypadControls();
-<<<<<<< HEAD
-=======
 Q.touch();
->>>>>>> 8e3fc9f6c4d7dc2767127b6dd8cc1ed171586632
 
 Q.scene('hud', function(stage) {
     var container = stage.insert(new Q.UI.Container({
@@ -41,12 +38,12 @@ Q.scene("level1", function(stage)
 {
     var background = new Q.TileLayer({dataAsset: 'tiled_tamz.tmx', layerIndex: 0, sheet: 'tiles', tileW: 32, tileH: 32, type: Q.SPRITE_NONE});
     stage.insert(background);
-    stage.collisionLayer(new Q.TileLayer({dataAsset: 'tiled_tamz.tmx', layerIndex: 1, sheet: 'tiles', tileW: 32, tileH: 32}));
+    stage.collisionLayer(new Q.TileLayer({dataAsset: 'tiled_tamz.tmx', layerIndex: 1, sheet: 'tiles', tileW: 32, tileH: 32, type: Q.SPRITE_DEFAULT}));
     player = stage.insert(new Q.Player());
     stage.add("viewport").follow(player);
-    stage.insert(new Q.Items({x: 100, y: 100}));
-     stage.insert(new Q.Enemy({x: 200, y: 150}));
-     stage.insert(new Q.Enemy({x: 300, y: 150}));
+    stage.insert(new Q.Items({x: 50, y: 150}));
+     //stage.insert(new Q.Enemy({x: 400, y: 500}));
+     //stage.insert(new Q.Enemy({x: 600, y: 150}));
     stage.viewport.scale = 1;
     if (window.innerWidth <= 240) {
     	stage.viewport.scale = 0.5;
@@ -95,9 +92,9 @@ Q.Sprite.extend("Player", {
 			this.p.score += 5;
             var coinsLabel = Q("UI.Text", 1).items[0];
             coinsLabel.p.label = 'Score : ' + this.p.score;
-            yNew = Math.floor((Math.random()*32*9)+30);
-            xNew = Math.floor((Math.random()*32*13)+30);
-            frameNew = Math.floor((Math.random()*7*17)+1);
+            yNew = Math.floor((Math.random()*32*40)+1);
+            xNew = Math.floor((Math.random()*32*20)+1);
+            frameNew = Math.floor((Math.random()*7*3)+1);
             console.log(xNew, yNew, frameNew);
             st.insert(new Q.Items({x: xNew, y: yNew, frame: frameNew}));
         }
@@ -196,9 +193,19 @@ Q.Sprite.extend("Items", {
     init: function(p) {
         this._super(p,
         	 {sheet: "item",
-        	  sprite: "item"
+        	  sprite: "item",
+        	  type: Q.SPRITE_DEFAULT
         	  });
-    }
+       	this.add('2d');
+       	this.on("hit", this, "collision");
+    },
+    collision: function(col){
+    	console.log("collision");
+    	if(!col.obj.isA("Player")){
+    		//this.destroy();
+    		console.log("destroyed");
+    		}
+    	}
 });
 
 Q.animations('enemy', {
