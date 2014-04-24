@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+     var watchID = null;
+     var watchID2 = null;
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        startWatch();
+        checkStringDate();
+    }
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            //'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            //'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + position.timestamp                    + '<br />';
+    }
+    
+     function startWatch() {
+        var options = { frequency: 200 };
+        watchID = navigator.compass.watchHeading(onCompasSuccess, onCompasError, options);
+        
+        var options = { frequency: 3000, enableHighAccuracy: true , timeout : 10000};
+        watchID2 = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+    
+    function onCompasSuccess(heading) {
+        var element = document.getElementById('heading');
+        element.innerHTML = 'Heading: ' + heading.magneticHeading + '<br />';
+        var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+      var radius = 75;
+      var startAngle = 0 * (Math.PI/180);
+      var endAngle = 360 * (Math.PI/180);
+      var counterClockwise = false;
+
+      context.beginPath();
+      context.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+      context.lineWidth = 15;
+
+      // line color
+      context.strokeStyle = 'black';
+      context.stroke();
+      
+      var startAngle = (180 - heading.magneticHeading -2) * (Math.PI/180);
+      var endAngle = (180 - heading.magneticHeading + 2) * (Math.PI/180);
+      
+      context.beginPath();
+      context.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+      context.lineWidth = 15;
+      
+      context.strokeStyle = 'red';
+      context.stroke();
+    }
+
+    // onError: Failed to get the heading
+    //
+    function onCompasError(compassError) {
+        alert('Compass error: ' + compassError.code);
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        if (watchID != null) {
+            navigator.geolocation.clearWatch(watchID);
+            watchID = null;
+        }
+        var options = { frequency: 3000 };
+        watchID2 = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+    
+function checkStringDate() {
+      navigator.globalization.dateToString(
+        new Date(),
+        function (date) {
+            var element = document.getElementById('date');
+            element.innerHTML ='date: ' + date.value  + '<br />';},
+        function () {alert('Error getting date\n');},
+        {selector:'date'}
+      );
+    }
+    </script>
+  </head>
+  <body>
+    <p id="geolocation">Finding geolocation...</p>
+    <div id="heading">Waiting for heading...</div>
+    <canvas id="myCanvas" width="300" height="300"></canvas>
+    <div id="date">Date:</div>
+  </body>
+</html>
