@@ -1,0 +1,3 @@
+# view AndroidManifest.xml #generated:6
+-keep class cz.vsb.mor03.Ex.Example { <init>(...); }
+

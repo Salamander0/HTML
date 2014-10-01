@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            TAMZ 1 Template with local files
+        </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="js/jquery-1.11.0.js"></script>
+        <script src="js/jquery.mobile-1.4.0.js"></script>
+        
+        <link rel="stylesheet" href="themes/vsb-1.4.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.0.min.css" />
+        
+        <!-- Date picker -->
+        <script src="datepicker/jquery.ui.datepicker.min.js"></script>
+        <script src="datepicker/jquery.mobile.datepicker.js"></script>        
+        <link rel="stylesheet" href="datepicker/jquery.mobile.datepicker.css" />
+        
+        <!--<link rel="stylesheet" href="themes/my_theme.css" />-->
+    </head>
+    <body>
+      <div data-role="page" data-theme="c" id="page1">
+        <div data-role="header">
+            <h1>Doomsday clock</h1>
+        </div><!--header-->
+        <div class="ui-content" role="main">
+            <div data-role="fieldcontain">
+                <label for="id1">Enter type of calendar</label>
+                    <input type="text" id="id1" name="id"/>
+                <label for="date1">Enter the date (MM/DD/YYYY)</label>
+                    <input type="text" data-role="date" id="date1"/>
+                <a data-role="button" id="find out" 
+                           data-rel="dialog" onclick="vypocitej()">Find out!</a>
+                <div id='res'></div>    
+                <script>
+                    $("#time1").attr("type", "time");
+                    function vypocitej(){
+                        var date=new Date();
+                        date.setHours(0);
+                        date.setMinutes(0);
+                        date.setSeconds(0);
+                        date.setMilliseconds(0);
+                        
+                        var target_date=new Date($("#date1").val());
+                        
+                        if(date.getTime() === target_date.getTime()){
+                            $("#res").text(("End of the world according to ")+($("#id1").val())+(" calendar is today ... good luck."));
+                        }else if(date.getTime() < target_date.getTime()){                                        
+                            var days_left = target_date.getTime() - date.getTime();
+                            days_left = days_left/86400000;                                      
+                            $("#res").text(("End of the world according to ")+($("#id1").val())+(" calendar is in ")+days_left+(" days."));
+                        }else{
+                            var days_after = date.getTime() - target_date.getTime();
+                            days_after = days_after/86400000;                                      
+                            $("#res").text(("End of the world according to ")+($("#id1").val())+(" calendar was ")+days_after+(" days ago. You are probably dead."));
+                        }
+                    }
+                </script>
+            </div>
+        </div><!--content-->
+        <div data-role="footer">
+            <br/><!--filler, remove-->
+        </div><!--footer-->
+      </div><!--page-->   
+    </body>
+</html>

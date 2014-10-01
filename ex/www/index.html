@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+     var watchID = null;
+     var watchID2 = null;
+     var windowWidth = 480;
+     var windowHeight = 800;
+     var pixelRatio = 1;
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
+        pixelRatio = window.devicePixelRatio || 1;
+        var canvas = document.getElementById('myCanvas');
+      
+        canvas.width = windowWidth * pixelRatio;   /// resolution of canvas
+        canvas.height = windowHeight * pixelRatio;
+        canvas.style.width = windowWidth + 'px';   /// CSS size of canvas
+        canvas.style.height = windowHeight + 'px';
+        
+      
+      var context = canvas.getContext('2d');
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+ 
+      context.fillStyle = '#333';
+      context.fillRect(0,0,2*x,2*y);
+      startWatch();
+    }
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var canvas = document.getElementById('myCanvas');
+        
+      var context = canvas.getContext('2d');
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+      
+      context.fillStyle = '#333';
+      context.fillRect(0,0,x,240);
+      
+      context.fillStyle = 'white';
+      context.font = '50px sans-serif';
+      context.textBaseLine = 'middle';
+      context.fillText('Latitude: '           + position.coords.latitude, x, 60);
+      context.fillText('Longitude: '          + position.coords.longitude, x, 120); 
+      context.fillText('Accuracy: '           + position.coords.accuracy , x, 180); 
+      context.fillText('Speed: '              + position.coords.speed , x, 240);
+    }
+    
+     function startWatch() {
+        var options = { frequency: 200 };
+        watchID = navigator.compass.watchHeading(onCompasSuccess, onCompasError, options);
+        
+        var options = { frequency: 3000, enableHighAccuracy: true , timeout : 10000};
+        watchID2 = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+    
+    function onCompasSuccess(heading) {
+      var heading = heading.magneticHeading.toFixed();  
+      var canvas = document.getElementById('myCanvas');
+      
+      var context = canvas.getContext('2d');
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+      var radius = canvas.width/2.5;
+      var startAngle = 0 * (Math.PI/180);
+      var endAngle = 360 * (Math.PI/180);
+      var counterClockwise = false;
+
+      context.beginPath();
+      context.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+      context.lineWidth = canvas.width/17;
+
+      context.fillStyle = '#333';
+      context.fill();  
+        
+      // line color
+      context.strokeStyle = 'lime';
+      context.stroke();
+      
+      var startAngle = (270 - heading - 1.5) * (Math.PI/180);
+      var endAngle = (270 - heading + 1.5) * (Math.PI/180);
+      
+      context.beginPath();
+      context.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+      
+      context.strokeStyle = 'red';
+      context.stroke();
+      
+      context.fillStyle = 'white';
+      context.font = '120px sans-serif';
+      context.textBaseLine = 'middle';
+      context.textAlign = 'center';
+      context.fillText(heading, x, y);
+    }
+
+    // onError: Failed to get the heading
+    //
+    function onCompasError(compassError) {
+        alert('Compass error: ' + compassError.code);
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        if (watchID != null) {
+            navigator.geolocation.clearWatch(watchID);
+            watchID = null;
+        }
+        var options = { frequency: 3000 };
+        watchID2 = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+    
+function checkStringDate() {
+      navigator.globalization.dateToString(
+        new Date(),
+        function (date) {
+            var element = document.getElementById('date');
+            element.innerHTML ='date: ' + date.value  + '<br />';},
+        function () {alert('Error getting date\n');},
+        {selector:'date'}
+      );
+    }
+    </script>
+  </head>
+  <body scroll="no" style="overflow: hidden">
+        <div id="deleteThisDivButNotItsContent" align="center">
+            <canvas id="myCanvas" style="border:1px solid #000000; position:absolute; top:0;left:0;"></canvas><br>
+        </div>
+  </body>
+</html>

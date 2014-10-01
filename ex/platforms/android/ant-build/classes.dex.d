@@ -1,0 +1,22 @@
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes.dex : \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/BuildConfig.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/Example.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/R$attr.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/R$drawable.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/R$string.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/R$xml.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/cz/vsb/mor03/Ex/R.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener$1.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/deviceorientation/CompassListener$1.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/deviceorientation/CompassListener.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener$LocationTimeoutTask.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GeoBroker.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GPSListener.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/geolocation/NetworkListener.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/globalization/Globalization$1.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/globalization/Globalization.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/classes/org/apache/cordova/globalization/GlobalizationError.class \
+/Users/daprok/Documents/workspace/ex/platforms/android/ant-build/dexedLibs/classes-71c9c4926a0ba2ab3d9ce9e2b74b62f2.jar \

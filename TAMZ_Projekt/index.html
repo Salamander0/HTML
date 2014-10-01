@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket Chat</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, minimum-scale=0.5, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body scroll="no" style="overflow: hidden">
+      <div data-role="page"  id="page1">
+          <header class="header">
+              <h2 class="room-title" id="room-title">Public Room</h2>
+              <h1><span class="part-1">Websocket</span> <span class="part-2">&nbsp;Chat</span></h1>
+          </header>
+
+            <div id="chat-nickname-form" class="chat-nickname-form">
+                <label for="nickname">Enter nickname: </label>
+                <br />
+                <input type="text" id="nickname" class="nick-form"/>
+                <br />
+                <label for="chatroom" class="chatroom-label">Join/create chat room: </label>
+                <br/>
+                <input type="text" id="chatroom" class="nick-form" placeholder="Public Room"/>
+                <br/>
+                <button id="nickname-submit" class="button nick-form">Start Chatting</button>
+                <br/><br/>
+                <label for="room-share-url"><i>Share this link to invite someone to this chat room</i>: </label>
+                <br />
+                <input type="text" id="room-share-url" class="nick-form room-share-url" readonly="readonly" />
+                <br/>
+                <br/>
+                <br/>
+            </div>
+
+          <div id="chat-container" class="chat-container hide">
+              <div id="chat-main-stage" class="chat-main-stage">
+                  <div id="message-log-area" class="message-log-area">
+                      <div class="message-area-padding"></div>
+
+                      <div class="talk-bubble-set">
+                          <div class="bubble">
+                            <span class="msg-text  bubble-alt">
+                                Hello <span id="welcome-message-user-name"></span>, welcome to chat.
+                            </span>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="chatter-list-sidebar">
+                      <div class="title">People online now</div>
+                      <div id="chatter-list" class="chatter-list">
+                      </div>
+                  </div>
+              </div>
+              <!--message box-->
+              <div id="send-msg" class="send-msg">
+                  <div id="emoticons">
+                      <a href="#" title=":)"><img alt=":)" border="0" src="/TAMZ_Projekt/emoticons/smile.png" /></a>
+                      <a href="#" title=":("><img alt=":(" border="0" src="/TAMZ_Projekt//emoticons/sad.png" /></a>
+                      <a href="#" title=":o"><img alt=":o" border="0" src="/TAMZ_Projekt//emoticons/surprise.png" /></a>
+                      <a href="#" title=":a"><img alt=":a" border="0" src="/TAMZ_Projekt//emoticons/monkey.png" /></a>
+                      <a href="#" title=":|"><img alt=":|" border="0" src="/TAMZ_Projekt//emoticons/plain.png" /></a>
+                      <a href="#" title="(*)"><img alt="(*)" border="0" src="/TAMZ_Projekt//emoticons/star.png" /></a>
+                      <a href="#" title="(hug)"><img alt="(hug)" border="0" src="/TAMZ_Projekt//emoticons/hug.png" /></a>
+                      <a href="#" title="(-)"><img alt="(-)" border="0" src="/TAMZ_Projekt//emoticons/error.png" /></a>
+                      <a href="#" title="(!)"><img alt="(!)" border="0" src="/TAMZ_Projekt//emoticons/important.png" /></a>
+                      <a href="#" title=":D"><img alt=":D" border="0" src="/TAMZ_Projekt//emoticons/smile-big.png" /></a>
+                      <a href="#" title="O:)"><img alt="O:)" border="0" src="/TAMZ_Projekt//emoticons/angel.png" /></a>
+                      <a href="#" title=":S"><img alt=":S" border="0" src="/TAMZ_Projekt//emoticons/confused.png" /></a>
+                      <a href="#" title="B)"><img alt="B)" border="0" src="/TAMZ_Projekt//emoticons/cool.png" /></a>
+                      <a href="#" title=";("><img alt=";(" border="0" src="/TAMZ_Projekt//emoticons/crying.png" /></a>
+                      <a href="#" title="3:)"><img alt="3:)" border="0" src="/TAMZ_Projekt//emoticons/devilish.png" /></a>
+                      <a href="#" title="<3"><img alt="<3" border="0" src="/TAMZ_Projekt//emoticons/favorite.png" /></a>
+                      <a href="#" title=":*"><img alt=":*" border="0" src="/TAMZ_Projekt//emoticons/kiss.png" /></a>
+                      <a href="#" title=":p"><img alt=":p" border="0" src="/TAMZ_Projekt//emoticons/razz.png" /></a>
+                      <a href="#" title=";)"><img alt=";)" border="0" src="/TAMZ_Projekt//emoticons/wink.png" /></a>
+                  </div>
+                  <textarea id="msg-box" class="msg-box"></textarea>
+                  <span id="send-btn" class="send-btn button">SEND</span>
+              </div>
+          </div>
+
+          <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+          <script src="js/chat_client.js"></script>
+          <audio id="notification-sound" src="sounds/Rhea.ogg" preload="auto"></audio>
+      </div>
+    </body>
+</html>
